@@ -16,27 +16,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   initialize() async {
-    const uri = 'http://192.168.1.38:8080';
-    final socket = await SocketIO.createNewInstance(uri);
-    await socket.on(SocketIOEvent.connecting, () async {
-      print('Connecting...');
-    });
-    await socket.on(SocketIOEvent.connect, () async {
-      print('Connected.');
+    try {
+      const uri = 'http://api.nar.ng';
+      final socket = await SocketIO.createNewInstance(uri);
+      await socket.on(SocketIOEvent.connecting, () async {
+        print('Connecting...');
+      });
+      await socket.on(SocketIOEvent.connect, () async {
+        print('Connected.');
 
-      final id = await socket.id;
-      print('Client SocketID: $id');
-    });
-    await socket.on(SocketIOEvent.connectError, (error) {
-      print('Error: $error');
-    });
-    await socket.on('sayHello', (greeting) {
-      print('Hello, ${greeting['Hello']}');
-    });
-    await socket.connect();
-    await socket.emit('sayHello', [
-      {'Hello': 'world!'},
-    ]);
+        final id = await socket.id;
+        print('Client SocketID: $id');
+      });
+      await socket.on(SocketIOEvent.connectError, (error) {
+        print('Error: $error');
+      });
+      await socket.on('sayHello', (greeting) {
+        print('Hello, ${greeting['Hello']}');
+      });
+      await socket.connect();
+      await socket.emit('sayHello', [
+        {'Hello': 'world!'},
+      ]);
+    } catch (E) {
+      print(E);
+    }
   }
 
   @override
